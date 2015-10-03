@@ -39,6 +39,7 @@ import (
 	"github.com/b3log/wide/scm/git"
 	"github.com/b3log/wide/session"
 	"github.com/b3log/wide/util"
+	"github.com/miketheprogrammer/go-thrust/thrust"
 )
 
 // Logger
@@ -183,6 +184,16 @@ func main() {
 
 	// git
 	http.HandleFunc(conf.Wide.Context+"/git/clone", handlerWrapper(git.CloneHandler))
+
+	thrust.InitLogger()
+	thrust.Start()
+
+	thrustWindow := thrust.NewWindow(thrust.WindowOptions{
+		RootUrl:  "http://" + conf.Wide.Server,
+		IconPath: "./static/favicon.ico",
+	})
+	thrustWindow.Show()
+	thrustWindow.Focus()
 
 	logger.Infof("Wide is running [%s]", conf.Wide.Server+conf.Wide.Context)
 
